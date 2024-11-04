@@ -19,7 +19,7 @@ const CreateGroup = () => {
         <header className="create-group-header">
           <img
             onClick={handleGoBack}
-            className="back-button"
+            className="cg-back-button"
             src={back}
             alt="back"
             width="28"

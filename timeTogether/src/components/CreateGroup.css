@@ -19,20 +19,20 @@
   background-color: #ffffff;
   margin-bottom: 50px;
 }
-.back-button {
+.cg-back-button {
   position: absolute;
   left: 5%; /* 왼쪽 끝에 배치 */
   cursor: pointer;
 }
 /* back-button: 작은 화면에서는 비율에 맞춰 더 작은 크기 적용 */
 @media (max-width: 767px) {
-  .back-button {
+  .cg-back-button {
     width: 23px;
     left: 20%;
   }
 }
 @media (max-width: 375px) {
-  .back-button {
+  .cg-back-button {
     width: 23px;
     left: 23%;
   }
