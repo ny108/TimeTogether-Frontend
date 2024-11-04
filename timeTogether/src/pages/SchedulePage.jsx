@@ -6,7 +6,7 @@ function SchedulePage() {
   return (
     <div className="group-page">
       {/* 네비게이션 바 */}
-      <NavigationBar />
+      {/* <NavigationBar /> */}
     </div>
   );
 }

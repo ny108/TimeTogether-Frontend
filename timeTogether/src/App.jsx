@@ -10,8 +10,12 @@ import GroupPage from "./pages/GroupPage"; // 그룹 페이지
 import CalendarPage from "./pages/CalendarPage"; // 캘린더 페이지
 import SchedulePage from "./pages/SchedulePage"; // 회의일정 페이지
 import MyPage from "./pages/MyPage"; // 마이페이지
+
+import MeetingsPage from "./pages/MeetingsPage"; //장소페이지
 //컴포넌트 import
 import CreateGroup from "./components/CreateGroup"; //그룹생성 페이지
+import NavigationBar from "./components/NavigationBar"; //네비게이션 바
+import AddPlaceModal from "./components/AddPlaceModal";
 
 function App() {
   return (
@@ -26,7 +30,9 @@ function App() {
           <Route path="/schedule" element={<SchedulePage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/create-group" element={<CreateGroup />} />
+          <Route path="/meetings/:id" element={<MeetingsPage />} />
         </Routes>
+        <NavigationBar />
       </div>
     </>
   );

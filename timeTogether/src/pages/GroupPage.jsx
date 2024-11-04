@@ -135,9 +135,6 @@ function GroupPage() {
         onCancel={closeDeleteModal}
         groupName={selectedGroup ? selectedGroup.name : ""}
       />
-
-      {/* 네비게이션 바 */}
-      <NavigationBar />
     </>
   );
 }
