@@ -11,8 +11,9 @@ function Login() {
   return (
     <div className="login-container">
       {/* 로고 */}
-      <img className="login-logo" src={logo2} alt="로고"></img>
-
+      <Link to="/group">
+        <img className="login-logo" src={logo2} alt="로고"></img>
+      </Link>
       {/* 앱 이름 */}
       <h1 className="login-title">타임투게더</h1>
 
@@ -24,9 +25,8 @@ function Login() {
         <p className="social-login-title">소셜 로그인</p>
         <img className="social-button" src={google} alt="구글로 시작"></img>
         <img className="social-button" src={kakao} alt="카카오로 시작"></img>
-        <Link to="/group">
-          <img className="social-button" src={naver} alt="네이버로 시작"></img>
-        </Link>
+
+        <img className="social-button" src={naver} alt="네이버로 시작"></img>
       </div>
     </div>
   );
