@@ -6,8 +6,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: black;
+  color: white;
   text-align: center;
+  background: linear-gradient(to bottom right, #a26af0, #731aef);
 }
 
 /* 로고 스타일 */
@@ -19,14 +20,14 @@
 
 /* 메인 텍스트 스타일 */
 .main-text {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.5rem;
 }
 
 /* 애니메이션 텍스트 기본 상태 */
 .animated-text {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
   transition: all 1s ease-in-out;
   word-spacing: 0.25rem; /* 기본 공백 간격 */

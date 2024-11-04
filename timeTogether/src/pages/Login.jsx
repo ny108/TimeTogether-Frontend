@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Login.css"; // css파일 import
-import logo from "../img/logo.png"; // 이미지 가져오기
+import logo from "../img/logo_white.png"; // 이미지 가져오기
+import logo2 from "../img/logo_purple.png";
 import kakao from "../img/kakao.png";
 import naver from "../img/naver.png";
 import google from "../img/google.png";
@@ -10,15 +11,13 @@ function Login() {
   return (
     <div className="login-container">
       {/* 로고 */}
-      <img className="login-logo" width="100px" src={logo} alt="로고"></img>
+      <img className="login-logo" src={logo2} alt="로고"></img>
 
       {/* 앱 이름 */}
       <h1 className="login-title">타임투게더</h1>
 
       {/* 앱 설명 */}
-      <p className="login-description">
-        쉽고 빠른 모임을 위한 약속 생성 도우미
-      </p>
+      <p className="login-description">쉽고 빠른 약속 생성 도우미</p>
 
       {/* 소셜 로그인 */}
       <div className="social-login-container">
