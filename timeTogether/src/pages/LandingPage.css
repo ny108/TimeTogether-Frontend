@@ -1,0 +1,42 @@
+.landing-container {
+  width: 600px;
+  /* width: 800px; */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  text-align: center;
+}
+
+/* 로고 스타일 */
+.landing-logo {
+  font-size: 5rem;
+  margin-top: -7rem;
+  margin-bottom: 2rem;
+}
+
+/* 메인 텍스트 스타일 */
+.main-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.7rem;
+}
+
+/* 애니메이션 텍스트 기본 상태 */
+.animated-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+  transition: all 1s ease-in-out;
+  word-spacing: 0.25rem; /* 기본 공백 간격 */
+  opacity: 1;
+  /* font-family: "Amarante";
+  font-family: "Poppins"; */
+}
+
+/* 전환된 상태 */
+.swap {
+  word-spacing: 0.7rem; /* 공백 간격 확대 */
+  opacity: 1; /* 페이드 인 효과 */
+}
