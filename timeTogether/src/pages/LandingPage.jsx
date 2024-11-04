@@ -11,11 +11,11 @@ function LandingPage() {
     // 1초 후 전환 애니메이션 시작
     const swapTimeout = setTimeout(() => {
       setIsSwapped(true); // 상태 전환
-    }, 600);
+    }, 900);
 
     const navigateTimeout = setTimeout(() => {
       navigate("/login");
-    }, 1600);
+    }, 1800);
 
     return () => clearTimeout(swapTimeout); // 타이머 정리
   }, []);
