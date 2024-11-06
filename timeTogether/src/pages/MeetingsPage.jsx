@@ -9,10 +9,11 @@ import LocationItemList from "../components/LocationItemList";
 import AddPlaceButton from "../components/AddPlaceButton";
 import AddPlaceModal from "../components/AddPlaceModal";
 import SelectPlaceButton from "../components/SelectPlaceButton";
+import TimetableContent from "../components/TimetableContent.jsx";
 
 function MeetingsPage() {
   const { id } = useParams();
-  const [activeTab, setActiveTab] = useState("어디서");
+  const [activeTab, setActiveTab] = useState("언제");
   const [locations, setLocations] = useState([]);
   const [selectedLocationIds, setSelectedLocationIds] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -108,7 +109,9 @@ function MeetingsPage() {
         onSelect={(option) => setActiveTab(option)}
       />
       <div className="tab-content">
-        {activeTab === "언제" && <p>언제</p>}
+        {activeTab === "언제" && (
+            <TimetableContent activeTab={activeTab}/>
+        )}
         {activeTab === "어디서" && (
           <>
             {!isPlaceConfirmed ? (
