@@ -147,7 +147,7 @@
 }
 
 .disabled .day-number {
-  color: #ccc !important; /* disabled는 회색 계열 */
+  color: #e0e0e0 !important; /* disabled는 회색 계열 */
 }
 
 /* .today .day-number {
