@@ -55,6 +55,7 @@
 }
 .share-icon {
   width: 3rem;
+  margin-top: 6px;
 }
 
 .share-icon:hover {

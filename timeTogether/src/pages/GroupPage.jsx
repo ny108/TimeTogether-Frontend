@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./GroupPage.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import NavigationBar from "../components/NavigationBar";
 import CreateGroup from "../components/CreateGroup";
 import GroupCard from "../components/GroupCard";
@@ -29,44 +30,69 @@ function GroupPage() {
   //   fetchGroups();
   // }, []);
   // 예시 데이터를 설정를 설정하는 함수.
-
+  // 백엔드에서 그룹 데이터를 가져오는 함수
   useEffect(() => {
-    // 예시 데이터
-    const exampleGroups = [
-      {
-        id: 1,
-        name: "팀 1",
-        description: "2024-2학기 소프트웨어공학 팀플",
-        members: ["김00", "이00", "최00", "박00"],
-        image: "https://via.placeholder.com/70", // 예시 이미지 URL
-      },
-      {
-        id: 2,
-        name: "졸프 팀",
-        description: "졸업을 위하여...",
-        members: ["김00", "이00", "최00", "박00"],
-        image:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL0mWBDKPR964fHPZTXR6e1Ul5QzsFpyPrBA&s", // 예시 이미지 URL
-      },
-      {
-        id: 3,
-        name: "밴드 소모임",
-        description: "밴드를 합시다~",
-        members: ["김00", "이00", "최00", "박00"],
-        image: "https://via.placeholder.com/70", // 예시 이미지 URL
-      },
-      {
-        id: 4,
-        name: "팀 4",
-        description: "2024-2학기 소프트웨어공학 팀플",
-        members: ["김00", "이00", "최00", "박00"],
-        image: "https://via.placeholder.com/70", // 예시 이미지 URL
-      },
-    ];
+    const fetchGroups = async () => {
+      console.log(groups);
+      console.log("fetchGroups 함수 호출됨");
+      try {
+        const response = await axios.get("/group/groups/view");
+        if (response.data.httpStatus === "OK") {
+          const formattedData = response.data.data.map((group) => ({
+            id: group.groupId,
+            name: group.groupName,
+            description: group.groupTitle,
+            image: group.groupImg,
+            members: group.groupMembers ? group.groupMembers.split(",") : [],
+            manager: group.groupMgrId,
+          }));
+          setGroups(formattedData);
+        }
+      } catch (error) {
+        console.error("그룹 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
 
-    // 예시 데이터를 상태에 설정
-    setGroups(exampleGroups);
+    fetchGroups();
   }, []);
+
+  // useEffect(() => {
+  //   // 예시 데이터
+  //   const exampleGroups = [
+  //     {
+  //       id: 1,
+  //       name: "팀 1",
+  //       description: "2024-2학기 소프트웨어공학 팀플",
+  //       members: ["김00", "이00", "최00", "박00"],
+  //       image: "https://via.placeholder.com/70", // 예시 이미지 URL
+  //     },
+  //     {
+  //       id: 2,
+  //       name: "졸프 팀",
+  //       description: "졸업을 위하여...",
+  //       members: ["김00", "이00", "최00", "박00"],
+  //       image:
+  //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL0mWBDKPR964fHPZTXR6e1Ul5QzsFpyPrBA&s", // 예시 이미지 URL
+  //     },
+  //     {
+  //       id: 3,
+  //       name: "밴드 소모임",
+  //       description: "밴드를 합시다~",
+  //       members: ["김00", "이00", "최00", "박00"],
+  //       image: "https://via.placeholder.com/70", // 예시 이미지 URL
+  //     },
+  //     {
+  //       id: 4,
+  //       name: "팀 4",
+  //       description: "2024-2학기 소프트웨어공학 팀플",
+  //       members: ["김00", "이00", "최00", "박00"],
+  //       image: "https://via.placeholder.com/70", // 예시 이미지 URL
+  //     },
+  //   ];
+
+  //   // 예시 데이터를 상태에 설정
+  //   setGroups(exampleGroups);
+  // }, []);
 
   const openInviteModal = () => setIsInviteModalOpen(true);
   const closeInviteModal = () => setIsInviteModalOpen(false);

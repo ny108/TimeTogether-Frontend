@@ -11,7 +11,7 @@ function Login() {
   const navigate = useNavigate();
 
   // 카카오 인가 요청 URL 생성 (redirect_uri 카카오developer에서 수정하기!!!!!)
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=f0cfd8fd7bb4da57b220043a25208ca7&redirect_uri=http://172.20.10.4:3000/oauth2/redirect&response_type=code`;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=f0cfd8fd7bb4da57b220043a25208ca7&redirect_uri=http://192.168.233.205:8080/login/oauth2/code/kakao&response_type=code`;
 
   return (
     <div className="login-container">
@@ -33,13 +33,17 @@ function Login() {
         >
           <img className="social-button" src={kakao} alt="카카오로 시작" />
         </a> */}
-        <a href={KAKAO_AUTH_URL} target="_self" rel="noopener noreferrer">
+        <a
+          href="http://192.168.233.205:8080/oauth2/authorization/kakao"
+          target="_self"
+          rel="noopener noreferrer"
+        >
           <img className="social-button" src={kakao} alt="카카오로 시작" />
         </a>
 
         {/* 네이버 로그인 버튼 */}
         <a
-          href="http://172.20.10.9:8080/oauth2/authorization/naver"
+          href="http://192.168.233.205:8080/oauth2/authorization/naver"
           target="_self"
           rel="noopener noreferrer"
         >
@@ -48,7 +52,7 @@ function Login() {
 
         {/* 구글 로그인 버튼 */}
         <a
-          href="http://172.20.10.9:3000/oauth2/authorization/google"
+          href="http://192.168.233.205:3000/oauth2/authorization/google"
           target="_self"
           rel="noopener noreferrer"
         >
