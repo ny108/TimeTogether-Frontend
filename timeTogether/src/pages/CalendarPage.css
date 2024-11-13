@@ -4,20 +4,33 @@
   min-height: 100vh;
   background-color: #fafafa;
   padding-bottom: 60px; /* 네비게이션 바 공간 확보 */
+  max-width: 600px;
   width: 100%;
   margin: 0 auto; /* 화면 중앙 정렬 */
   overflow: hidden; /* 페이지에서 스크롤을 숨김 */
 }
-@media (min-width: 400px) {
+@media (min-width: 340px) {
   .calendar-page {
-    width: 430px;
+    min-width: 340px;
   }
 }
+@media (min-width: 390px) {
+  .calendar-page {
+    min-width: 390px;
+  }
+}
+@media (min-width: 400px) {
+  .calendar-page {
+    min-width: 430px;
+  }
+}
+
 .calendar {
   overflow-y: auto; /* 그룹 목록만 세로 스크롤 가능 */
   margin-top: 10px;
   padding: 0 15px;
   padding-bottom: 20px;
+  width: 100%;
 }
 /* Webkit 기반 브라우저에서 스크롤바 숨기기 */
 .calendar::-webkit-scrollbar {
@@ -249,4 +262,5 @@
   width: 100%; /* 부모 요소인 날짜 셀의 너비를 채우도록 설정 */
   max-width: 100%; /* 너비가 날짜 셀을 넘지 않도록 고정 */
   text-align: left;
+  cursor: pointer;
 }

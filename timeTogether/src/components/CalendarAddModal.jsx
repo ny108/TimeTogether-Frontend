@@ -11,6 +11,7 @@ function CalendarAddModal({
 }) {
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
+  const [content, setContent] = useState("");
   const [color, setColor] = useState("#f5a623");
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
 
@@ -24,13 +25,16 @@ function CalendarAddModal({
       // editEvent가 없을 때는 빈 값으로 초기화
       setTitle("");
       setLocation("");
-      setColor("#f5a623");
+      setColor("#FFC553");
     }
   }, [editEvent]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const event = { title, location, color };
+    // 제목과 장소가 비어있을 경우 기본값을 설정
+    const eventTitle = title.trim() === "" ? "새로운 일정" : title;
+    const eventLocation = location.trim() === "" ? "장소없음" : location;
+    const event = { title: eventTitle, location: eventLocation, color };
     if (editEvent) {
       updateEvent(format(date, "yyyy-MM-dd"), event);
     } else {
@@ -39,7 +43,15 @@ function CalendarAddModal({
     closeModal();
   };
 
-  const colors = ["#f5a623", "#f8e71c", "#7ed321", "#4a90e2", "#9013fe"];
+  const colors = [
+    "#FDBAAB",
+    "#FEA666",
+    "#FFC553",
+    // "#A26AF0",
+    "#b790eb",
+    "#9747FF",
+    "#3B4FFF",
+  ];
 
   return (
     <div className="cm-modal-overlay" onClick={closeModal}>
@@ -50,21 +62,10 @@ function CalendarAddModal({
             className="cm-color-circle"
             onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
           ></span>
-          {format(date, "yyyy년 MM월 dd일")}
+          {format(date, "MM월 dd일")}
         </h2>
+
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="제목"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="장소"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          />
           {isColorPickerOpen && (
             <div className="cm-color-picker">
               {colors.map((c) => (
@@ -83,6 +84,32 @@ function CalendarAddModal({
               ))}
             </div>
           )}
+          <input
+            type="text"
+            placeholder="제목"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="장소"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+          <div>하루종일, 시간관련</div>
+          <textarea
+            placeholder="내용"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            rows="4" // 세로 크기 (행 수)
+            cols="12" // 가로 크기 (열 수)
+          />
+          {/* <input
+            type="text"
+            placeholder="내용"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          /> */}
           <button type="submit">{editEvent ? "일정 수정" : "일정 등록"}</button>
         </form>
       </div>
