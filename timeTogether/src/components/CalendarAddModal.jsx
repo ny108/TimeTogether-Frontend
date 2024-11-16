@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import "./CalendarAddModal.css";
+import { FaTrash } from "react-icons/fa";
 
 function CalendarAddModal({
   date,
@@ -8,6 +9,7 @@ function CalendarAddModal({
   updateEvent,
   closeModal,
   editEvent,
+  deleteEvent,
 }) {
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
@@ -20,24 +22,48 @@ function CalendarAddModal({
     if (editEvent) {
       setTitle(editEvent.title);
       setLocation(editEvent.location);
+      setContent(editEvent.content);
       setColor(editEvent.color);
     } else {
       // editEvent가 없을 때는 빈 값으로 초기화
       setTitle("");
       setLocation("");
+      setContent("");
       setColor("#FFC553");
     }
   }, [editEvent]);
 
   const handleSubmit = (e) => {
+    // e.preventDefault();
+    // // 제목과 장소가 비어있을 경우 기본값을 설정
+    // const eventTitle = title.trim() === "" ? "새로운 일정" : title;
+    // const eventLocation = location.trim() === "" ? "장소없음" : location;
+    // const event = { title: eventTitle, location: eventLocation, color };
+    // if (editEvent) {
+    //   updateEvent(format(date, "yyyy-MM-dd"), event);
+    // } else {
+    //   addEvent(format(date, "yyyy-MM-dd"), event);
+    // }
+    // closeModal();
     e.preventDefault();
     // 제목과 장소가 비어있을 경우 기본값을 설정
     const eventTitle = title.trim() === "" ? "새로운 일정" : title;
     const eventLocation = location.trim() === "" ? "장소없음" : location;
-    const event = { title: eventTitle, location: eventLocation, color };
+    const eventContent = content.trim() === "" ? "내용 없음" : content;
+
+    // 이벤트 객체에 내용(content) 추가
+    const event = {
+      title: eventTitle,
+      location: eventLocation,
+      content: eventContent, // 추가된 내용
+      color,
+    };
+
     if (editEvent) {
+      // 수정 시
       updateEvent(format(date, "yyyy-MM-dd"), event);
     } else {
+      // 새 이벤트 추가 시
       addEvent(format(date, "yyyy-MM-dd"), event);
     }
     closeModal();
@@ -110,7 +136,24 @@ function CalendarAddModal({
             value={content}
             onChange={(e) => setContent(e.target.value)}
           /> */}
-          <button type="submit">{editEvent ? "일정 수정" : "일정 등록"}</button>
+
+          <button className="cm-button" type="submit">
+            {editEvent ? "수정" : "추가하기"}
+          </button>
+          {editEvent && (
+            <FaTrash
+              className="ca-delete-button"
+              title="Delete"
+              onClick={() => deleteEvent(format(date, "yyyy-MM-dd"), editEvent)}
+            />
+            //    <button
+            //    type="button"
+            //    onClick={() => deleteEvent(format(date, "yyyy-MM-dd"), editEvent)}
+            //    className="ca-delete-button"
+            //  >
+            //    삭제
+            //  </button>
+          )}
         </form>
       </div>
     </div>

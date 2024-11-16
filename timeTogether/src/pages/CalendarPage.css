@@ -264,3 +264,13 @@
   text-align: left;
   cursor: pointer;
 }
+
+.event {
+  cursor: pointer;
+}
+
+.event.focused {
+  /* font-weight: bold; */
+  font-weight: bold;
+  border: 1px solid black;
+}
