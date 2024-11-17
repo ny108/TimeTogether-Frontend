@@ -83,11 +83,49 @@ function CalendarPage() {
     setIsModalOpen(true); // 수정 모달 열기
   };
 
-  const deleteEvent = (date, event) => {
-    setEvents((prevEvents) => ({
-      ...prevEvents,
-      [date]: prevEvents[date].filter((evt) => evt !== event),
-    }));
+  // const deleteEvent = (date, event) => {
+  //   setEvents((prevEvents) => ({
+  //     ...prevEvents,
+  //     [date]: prevEvents[date].filter((evt) => evt !== event),
+  //   }));
+  //   closeModal();
+  // };
+  const deleteEvent = (event) => {
+    const { startDate, endDate } = event;
+
+    setEvents((prevEvents) => {
+      const updatedEvents = { ...prevEvents };
+
+      if (startDate && endDate) {
+        let current = new Date(startDate);
+        const end = new Date(endDate);
+
+        while (current <= end) {
+          const formattedDate = format(current, "yyyy-MM-dd");
+          if (updatedEvents[formattedDate]) {
+            updatedEvents[formattedDate] = updatedEvents[formattedDate].filter(
+              (evt) => evt !== event
+            );
+            if (updatedEvents[formattedDate].length === 0) {
+              delete updatedEvents[formattedDate];
+            }
+          }
+          current.setDate(current.getDate() + 1);
+        }
+      } else {
+        const formattedDate = format(new Date(event.startDate), "yyyy-MM-dd");
+        if (updatedEvents[formattedDate]) {
+          updatedEvents[formattedDate] = updatedEvents[formattedDate].filter(
+            (evt) => evt !== event
+          );
+          if (updatedEvents[formattedDate].length === 0) {
+            delete updatedEvents[formattedDate];
+          }
+        }
+      }
+
+      return updatedEvents;
+    });
     closeModal();
   };
 
@@ -105,13 +143,47 @@ function CalendarPage() {
     closeModal();
   };
 
-  const updateEvent = (date, updatedEvent) => {
-    setEvents((prevEvents) => ({
-      ...prevEvents,
-      [date]: prevEvents[date].map((evt) =>
-        evt === editEvent ? updatedEvent : evt
-      ),
-    }));
+  const updateEvent = (updatedEvent) => {
+    const { startDate: oldStartDate, endDate: oldEndDate } = editEvent || {}; // 기존 이벤트
+    const { startDate: newStartDate, endDate: newEndDate } = updatedEvent; // 수정된 이벤트
+
+    setEvents((prevEvents) => {
+      const updatedEvents = { ...prevEvents };
+
+      // 1. 기존 이벤트 범위 삭제
+      if (oldStartDate && oldEndDate) {
+        let current = new Date(oldStartDate);
+        const oldEnd = new Date(oldEndDate);
+
+        while (current <= oldEnd) {
+          const formattedDate = format(current, "yyyy-MM-dd");
+          if (updatedEvents[formattedDate]) {
+            updatedEvents[formattedDate] = updatedEvents[formattedDate].filter(
+              (evt) => evt !== editEvent
+            );
+            if (updatedEvents[formattedDate].length === 0) {
+              delete updatedEvents[formattedDate];
+            }
+          }
+          current.setDate(current.getDate() + 1);
+        }
+      }
+
+      // 2. 새로운 이벤트 범위 추가
+      let current = new Date(newStartDate);
+      const newEnd = new Date(newEndDate);
+
+      while (current <= newEnd) {
+        const formattedDate = format(current, "yyyy-MM-dd");
+        if (!updatedEvents[formattedDate]) {
+          updatedEvents[formattedDate] = [];
+        }
+        updatedEvents[formattedDate].push(updatedEvent);
+        current.setDate(current.getDate() + 1);
+      }
+
+      return updatedEvents;
+    });
     closeModal();
   };
 
@@ -165,9 +237,16 @@ function CalendarPage() {
     const b = parseInt(hex.slice(5, 7), 16);
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   };
+  const calculateDateRange = (start, end) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    return Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1; // 시작일~종료일까지의 일수 계산
+  };
   const renderCells = () => {
     const rows = [];
     const totalDays = 35;
+    const formattedStartDate = format(new Date(startDate), "yyyy-MM-dd"); //연속적인 일정처리
+    const formattedEndDate = format(new Date(endDate), "yyyy-MM-dd"); //연속적인 일정처리
 
     for (let i = 0; i < totalDays; i++) {
       const day = addDays(startDate, i);
