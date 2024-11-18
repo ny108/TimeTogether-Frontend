@@ -235,11 +235,13 @@
   width: 45%;
   gap: 10px;
   z-index: 1;
+  border: 1px solid black;
 }
 .year-month-selector select {
   border: none;
   font-size: 1.2rem;
   color: #404040;
+  cursor: pointer;
 }
 .year-month-selector select:focus {
   outline: none;
