@@ -14,15 +14,16 @@ const InviteModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `http://192.168.233.218:8080/group/invited/${inviteCode}`,
+        {}, // POST 요청 본문이 없을 경우 빈 객체 전달
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         }
       );
-
+      console.log(response.data);
       // 응답 처리
       if (response.data.httpStatus === "OK") {
         alert("그룹에 성공적으로 초대되었습니다!"); // 성공 메시지
@@ -33,7 +34,8 @@ const InviteModal = ({ isOpen, onClose }) => {
       }
     } catch (error) {
       // 에러 처리
-      if (error.response && error.response.data.message) {
+      // if (error.response && error.response.data.message) {
+      if (response.data.httpStatus === "ALREADY_REPORTED") {
         setErrorMessage(error.response.data.message); // 백엔드 에러 메시지 표시
       } else {
         setErrorMessage("알 수 없는 오류가 발생했습니다."); // 기타 오류

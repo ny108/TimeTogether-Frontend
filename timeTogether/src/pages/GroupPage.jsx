@@ -18,41 +18,7 @@ function GroupPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 열림 상태
   const [selectedGroup, setSelectedGroup] = useState(null); // 삭제할 그룹 정보
 
-  // useEffect(() => { //실제 백엔드 연결코드
-  //   const fetchGroups = async () => {
-  //     console.log(groups);
-  //     console.log("액세스 토큰: ", { accessToken });
-  //     console.log("fetchGroups 함수 호출됨");
-  //     try {
-  //       const response = await axios.get(
-  //         "http://192.168.233.218:8080/group/groups/view",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${accessToken}`,
-  //           },
-  //         }
-  //       );
-  //       if (response.data.httpStatus === "OK") {
-  //         console.log(response.data);
-  //         const formattedData = response.data.data.map((group) => ({
-  //           id: group.groupId,
-  //           name: group.groupName,
-  //           description: group.groupTitle,
-  //           image: group.groupImg,
-  //           members: group.groupMembers ? group.groupMembers.split(",") : [],
-  //           manager: group.groupMgrId,
-  //         }));
-  //         setGroups(formattedData);
-  //       }
-  //     } catch (error) {
-  //       console.error("그룹 데이터를 가져오는 중 오류 발생:", error);
-  //     }
-  //   };
-
-  //   fetchGroups();
-  // }, []);
-
-  // useEffect(() => {
+  // useEffect(() => { // 실제 백엔드 연결코드
   //   const fetchGroups = async () => {
   //     // console.log("액세스 토큰: ", { accessToken });
   //     console.log("fetchGroups 함수 호출됨");

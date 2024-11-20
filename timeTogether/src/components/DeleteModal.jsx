@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./DeleteModal.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+const accessToken = localStorage.getItem("accessToken");
 const DeleteModal = ({
   isOpen,
   onConfirm,
@@ -21,11 +21,16 @@ const DeleteModal = ({
       const endpoint = isManager
         ? `/group/delete/${groupId}` // 관리자일 경우 그룹 삭제
         : `/group/${groupId}/leave`; // 일반 사용자일 경우 그룹 나가기
-
+      console.log(endpoint);
       const response = await axios.delete(
-        `http://192.168.233.218:8080${endpoint}`
+        `http://192.168.233.218:8080${endpoint}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
-
+      console.log(response.data);
       if (response.data.httpStatus === "OK") {
         alert(response.data.data || "요청이 성공적으로 처리되었습니다."); // 성공 메시지
         onConfirm(); // 모달 닫기 및 부모 컴포넌트 처리

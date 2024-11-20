@@ -43,7 +43,7 @@ function Login() {
 
         {/* 네이버 로그인 버튼 */}
         <a
-          href="http://192.168.233.205:8080/oauth2/authorization/naver"
+          href="http://192.168.164.228:8080/oauth2/authorization/naver"
           target="_self"
           rel="noopener noreferrer"
         >

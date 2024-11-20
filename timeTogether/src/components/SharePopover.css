@@ -21,6 +21,17 @@
   margin-bottom: 8px;
   font-weight: bold;
 }
+.invite-code-text2 {
+  display: inline-flex;
+  font-size: 1rem;
+  color: #404040;
+  /* color: white; */
+  /* margin-left: 0.4rem;
+  margin-bottom: 8px; */
+  font-weight: bold;
+  position: relative;
+  left: 30px;
+}
 
 .copy-button {
   display: inline-flex;
