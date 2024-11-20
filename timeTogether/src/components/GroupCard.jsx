@@ -48,7 +48,7 @@ const GroupCard = ({ group, onDelete }) => {
       <img src={group.groupImg} alt="Group" className="group-image" />
       <div className="group-info">
         <h3>{group.groupName}</h3>
-        <p className="group-description">{group.groupTitle}</p>
+        <p className="group-description">{group.groupIntro}</p>
         <p className="group-members">{group.groupMembers}</p>
       </div>
       <div className="group-actions">
@@ -61,7 +61,7 @@ const GroupCard = ({ group, onDelete }) => {
           <FaUserPlus className="icon share-icon" title="Share" />
           {/* <FaShare className="icon share-icon" title="Share" /> */}
           {isPopoverOpen && (
-            <SharePopover inviteCode="1234-5678-ABCD" onClose={closePopover} />
+            <SharePopover inviteCode={group.url} onClose={closePopover} />
           )}
         </div>
 

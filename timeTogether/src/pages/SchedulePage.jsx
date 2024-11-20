@@ -19,7 +19,7 @@ const dummyData = [
 
 const SchedulePage = () => {
   const [searchText, setSearchText] = useState("");
-  const [selectedGroupId, setSelectedGroupId] = useState(null); // 선택된 그룹 ID 상태
+  const [selectedGroupId, setSelectedGroupId] = useState(-1); // 선택된 그룹 ID 상태
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value);

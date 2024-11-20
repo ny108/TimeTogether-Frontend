@@ -72,3 +72,9 @@
 .invite-cancel-button:hover {
   background-color: #c0c0c0;
 }
+
+.i-error-message {
+  color: red;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+}

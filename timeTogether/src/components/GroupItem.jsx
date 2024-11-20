@@ -3,7 +3,7 @@ import "./GroupItem.css";
 import selectedAllGroupImage from "../assets/selected-all-group-image.png";
 
 const GroupItem = ({ group, onClick, isSelected }) => {
-  const isAllGroup = group.groupId === null; // 그룹 ID가 null인지 확인
+  const isAllGroup = group.groupId === -1; // 그룹 ID가 null인지 확인
 
   return (
     <div

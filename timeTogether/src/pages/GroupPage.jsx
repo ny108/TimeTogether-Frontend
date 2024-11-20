@@ -52,8 +52,63 @@ function GroupPage() {
   //   fetchGroups();
   // }, []);
 
+  // useEffect(() => {
+  //   const fetchGroups = async () => {
+  //     // console.log("액세스 토큰: ", { accessToken });
+  //     console.log("fetchGroups 함수 호출됨");
+
+  //     try {
+  //       const response = await axios.get(
+  //         "http://192.168.233.218:8080/group/groups/view",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         }
+  //       );
+
+  //       if (response.data.httpStatus === "OK") {
+  //         console.log("응답 데이터:", response.data);
+
+  //         // 새로운 데이터 구조에 맞게 변환
+  //         const formattedData = response.data.data.map((group) => ({
+  //           groupId: group.groupId,
+  //           groupName: group.groupName,
+  //           groupIntro: group.groupIntro,
+  //           groupImg: group.groupImg,
+  //           mgr: group.mgr,
+  //           url: group.groupUrl,
+  //           members: group.userNameResponseList.map((user) => user.userName), // userNameResponseList에서 userName 추출
+  //         }));
+
+  //         setGroups(formattedData);
+  //         console.log(groups);
+  //       }
+  //     } catch (error) {
+  //       console.error("그룹 데이터를 가져오는 중 오류 발생:", error);
+
+  //       // 에러 응답 처리
+  //       if (error.response) {
+  //         console.error("응답 코드:", error.response.status);
+  //         console.error("응답 메시지:", error.response.data.message);
+  //       }
+  //     }
+  //   };
+
+  //   fetchGroups();
+  // }, []);
+
   useEffect(() => {
     // 새로운 배열 형식의 더미 응답 데이터
+    axios
+      .get("http://192.168.233.205:8080/header/group/groups/view")
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(`groupPage에서 view요청 실패 ${err}`);
+      });
+
     const exampleResponse = {
       message: "요청에 성공했습니다.",
       httpStatus: "OK",
@@ -61,24 +116,28 @@ function GroupPage() {
         {
           groupId: 2,
           groupName: "hello-world",
-          groupTitle: "헬로우 월드",
+          groupIntro: "헬로우 월드",
           groupImg:
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL0mWBDKPR964fHPZTXR6e1Ul5QzsFpyPrBA&s",
           groupMembers: "김OO, 이OO, 박OO",
           groupMgrId: "118042957275397174302",
+          mgr: true,
+          url: "abcd-efg",
         },
         {
           groupId: 3,
           groupName: "미야옹",
-          groupTitle: "미야옹 월드",
+          groupIntro: "미야옹 월드",
           groupImg: "https://via.placeholder.com/70",
           groupMembers: null,
           groupMgrId: "100682045992698191363",
+          mgr: false,
+          url: "hijklmnop",
         },
         {
           groupId: 4,
           groupName: "미야옹",
-          groupTitle: "미야옹 월드",
+          groupIntro: "미야옹 월드",
           groupImg: "https://via.placeholder.com/70",
           groupMembers: null,
           groupMgrId: "100682045992698191363",
@@ -86,7 +145,7 @@ function GroupPage() {
         {
           groupId: 5,
           groupName: "강아지",
-          groupTitle: "강아지 월드",
+          groupIntro: "강아지 월드",
           groupImg: "https://via.placeholder.com/70",
           groupMembers: null,
           groupMgrId: "100682045992698191363",
@@ -158,7 +217,7 @@ function GroupPage() {
       <InviteModal
         isOpen={isInviteModalOpen}
         onClose={closeInviteModal}
-        onSubmit={handleInviteSubmit}
+        // onSubmit={handleInviteSubmit}
       />
 
       {/* 삭제 모달 */}
@@ -167,6 +226,8 @@ function GroupPage() {
         onConfirm={handleDeleteConfirm}
         onCancel={closeDeleteModal}
         groupName={selectedGroup ? selectedGroup.groupName : ""}
+        groupId={selectedGroup ? selectedGroup.groupId : ""}
+        isManager={selectedGroup ? selectedGroup.mgr : false} // mgr 값을 전달
       />
     </>
   );

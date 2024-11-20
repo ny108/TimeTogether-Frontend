@@ -35,6 +35,9 @@
   cursor: pointer;
   font-size: 0.8rem;
   margin-left: 1rem;
+  position: absolute;
+  right: 10px;
+  top: 7px;
 }
 
 .copy-icon {

@@ -28,7 +28,7 @@
   color: #333;
 }
 
-.delete-modal-content p {
+.realDeleteContent {
   font-size: 0.9rem;
   color: #555;
   margin-bottom: 20px;
@@ -65,4 +65,10 @@
 
 .delete-cancel-button:hover {
   background-color: #c0c0c0;
+}
+
+.d-error-message {
+  color: red;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
 }

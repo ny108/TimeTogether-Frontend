@@ -6,9 +6,9 @@ import axios from "axios";
 
 const CreateGroup = () => {
   const [groupName, setGroupName] = useState("");
-  const [groupTitle, setGroupTitle] = useState("");
+  const [groupIntro, setGroupIntro] = useState("");
   const [groupImg, setGroupImg] = useState("https://via.placeholder.com/100"); // 초기에는 기본 URL로 설정
-  const [meetType, setMeetType] = useState("OFFLINE");
+  // const [meetType, setMeetType] = useState("OFFLINE");
   const navigate = useNavigate();
 
   // 파일 선택 핸들러 - Data URL로 변환
@@ -27,19 +27,19 @@ const CreateGroup = () => {
   const handleCreateGroup = async () => {
     const accessToken = localStorage.getItem("accessToken");
     console.log(groupName);
-    console.log(groupTitle);
+    console.log(groupIntro);
     console.log(groupImg);
-    console.log(meetType);
+    // console.log(meetType);
     console.log("백엔드 전송시작");
 
     try {
       const response = await axios.post(
         "http://192.168.233.218:8080/group/create",
         {
-          groupName,
-          groupTitle,
-          groupImg, // Data URL로 전송
-          meetType,
+          groupName: groupName,
+          groupIntro: groupIntro,
+          groupImg: groupImg, // Data URL로 전송
+          // meetType,
         },
         {
           headers: {
@@ -109,12 +109,12 @@ const CreateGroup = () => {
             <input
               type="text"
               placeholder="그룹에 대한 설명"
-              value={groupTitle}
-              onChange={(e) => setGroupTitle(e.target.value)}
+              value={groupIntro}
+              onChange={(e) => setGroupIntro(e.target.value)}
             />
           </div>
 
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>약속 유형</label>
             <select
               value={meetType}
@@ -124,7 +124,7 @@ const CreateGroup = () => {
               <option value="ONLINE">온라인</option>
               <option value="UNSPECIFIED">구분 안 함</option>
             </select>
-          </div>
+          </div> */}
 
           <button className="create-group-button" onClick={handleCreateGroup}>
             그룹 생성하기
