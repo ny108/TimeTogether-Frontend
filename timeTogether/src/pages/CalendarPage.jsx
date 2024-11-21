@@ -355,6 +355,8 @@ import {
 } from "date-fns";
 import CalendarAddModal from "../components/CalendarAddModal";
 import "./CalendarPage.css";
+import axios from "axios";
+const accessToken = localStorage.getItem("accessToken");
 
 function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -388,13 +390,40 @@ function CalendarPage() {
         }
       );
 
-      const { meetingList } = response.data.data;
-
+      // const { meetingList } = response.data.data;
+      const { e, l } = response.data.data; // 응답에서 e와 l 추출
+      const { meetingList } = e; // e 안의 meetingList 추출
+      console.log("view 요청 성공", meetingList, l);
+      // console.log("view 요청성공");
+      // l 배열을 meetingId를 키로 하는 맵으로 변환
+      const locationMap = {};
+      l.forEach((location) => {
+        locationMap[location.meetingId] = {
+          locationName: location.locationName || "미설정",
+          locationUrl: location.locationUrl || "미설정",
+        };
+      });
+      console.log(meetingList);
       const newEvents = {};
       meetingList.forEach((meeting) => {
         const isAllDay = meeting.meetDTstart.endsWith("T00:00:00");
         const startDate = format(new Date(meeting.meetDTstart), "yyyy-MM-dd");
         const endDate = format(new Date(meeting.meetDTend), "yyyy-MM-dd");
+        const colors = [
+          "#FDBAAB",
+          "#FEA666",
+          "#FFC553",
+          "#b790eb",
+          "#9747FF",
+          "#3B4FFF",
+        ];
+        const groupId = meeting.id; // 그룹 ID
+        const color = colors[groupId % colors.length]; // ID 기반으로 색상 선택
+
+        // locationMap에서 meeting.id로 location 정보 찾기
+        const locationInfo = locationMap[meeting.id] || {};
+        const locationName = locationInfo.locationName;
+        const locationUrl = locationInfo.locationUrl;
 
         let current = new Date(startDate);
         const end = new Date(endDate);
@@ -408,22 +437,25 @@ function CalendarPage() {
             id: meeting.id, // 수정 및 삭제 요청에 사용
             title: meeting.meetTitle,
             content: meeting.meetContent,
-            location: meeting.locationName || "미설정",
-            locationUrl: meeting.locationUrl || "미설정",
+            // location: meeting.locationName || "미설정",
+            // locationUrl: meeting.locationUrl || "미설정",
+            location: locationName, // 병합된 locationName
+            locationUrl, // 병합된 locationUrl
             groupName: meeting.groupName || "미설정", // 그룹 이름
             isAllDay,
             startDate,
             endDate,
-            color:
-              meeting.color ||
-              [
-                "#FDBAAB",
-                "#FEA666",
-                "#FFC553",
-                "#b790eb",
-                "#9747FF",
-                "#3B4FFF",
-              ][Math.floor(Math.random() * 6)],
+            // color:
+            //   meeting.color ||
+            //   [
+            //     "#FDBAAB",
+            //     "#FEA666",
+            //     "#FFC553",
+            //     "#b790eb",
+            //     "#9747FF",
+            //     "#3B4FFF",
+            //   ][Math.floor(Math.random() * 6)],
+            color,
           });
           current.setDate(current.getDate() + 1);
         }
@@ -434,6 +466,9 @@ function CalendarPage() {
       console.error("Failed to load events:", error);
       alert("월별 일정 불러오기에 실패했습니다.");
     }
+  };
+  const refreshCalendar = () => {
+    loadEventsForMonth(); // 월별 일정을 다시 불러옵니다.
   };
 
   useEffect(() => {
@@ -498,6 +533,23 @@ function CalendarPage() {
     setFocusedEvent(event); // 포커스된 이벤트 설정
     setEditEvent(event); // 수정할 이벤트 설정
     setModalDate(day); // 날짜 설정
+    // 연속 일정의 모든 날짜를 포커스
+    const { startDate, endDate } = event;
+    if (startDate && endDate) {
+      let current = new Date(startDate);
+      const end = new Date(endDate);
+
+      while (current <= end) {
+        const formattedDate = format(current, "yyyy-MM-dd");
+        if (events[formattedDate]) {
+          events[formattedDate] = events[formattedDate].map((evt) =>
+            evt === event ? { ...evt, focused: true } : evt
+          );
+        }
+        current.setDate(current.getDate() + 1);
+      }
+      setEvents({ ...events }); // 상태 업데이트
+    }
     setIsModalOpen(true); // 수정 모달 열기
   };
 
@@ -719,6 +771,7 @@ function CalendarPage() {
           closeModal={closeModal}
           editEvent={editEvent} // 수정할 이벤트 전달
           deleteEvent={deleteEvent} // 삭제할 이벤트 전달
+          refreshCalendar={refreshCalendar} // 캘린더 새로고침 함수 전달
         />
       )}
     </div>

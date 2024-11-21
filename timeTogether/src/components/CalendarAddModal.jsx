@@ -526,6 +526,7 @@ import { format } from "date-fns";
 import axios from "axios";
 import "./CalendarAddModal.css";
 import { FaTrash } from "react-icons/fa";
+// import axios from "axios";
 
 function CalendarAddModal({
   date,
@@ -539,7 +540,8 @@ function CalendarAddModal({
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
   const [content, setContent] = useState("");
-  const [groupId, setGroupId] = useState(""); // 그룹 이름 추가
+  const [groupId, setGroupId] = useState(""); // 그룹 id
+  const [groupName, setGroupName] = useState(""); // 그룹 이름 (문자열, 사용자 수정 가능)
   const [locationUrl, setLocationUrl] = useState(""); // 장소 URL 추가
   const [color, setColor] = useState("#FDBAAB");
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
@@ -563,8 +565,9 @@ function CalendarAddModal({
       setTitle(editEvent.title || "");
       setLocation(editEvent.location || "미설정");
       setContent(editEvent.content || "미설정");
-      setGroupId(editEvent.groupId || "미설정");
-      setLocationUrl(editEvent.locationUrl || "미설정");
+      setGroupId(editEvent.groupId || ""); // 그룹 ID 초기화
+      setGroupName(editEvent.groupName || ""); // 그룹 이름 초기화
+      setLocationUrl(editEvent.locationUrl || "");
       setColor(
         editEvent.color || colors[Math.floor(Math.random() * colors.length)]
       );
@@ -588,24 +591,45 @@ function CalendarAddModal({
     const formattedStartTime = isAllDay ? "T00:00:00" : `T${startTime}:00`;
     const formattedEndTime = isAllDay ? "T00:00:00" : `T${endTime}:00`;
 
-    const eventData = {
-      meetingId: editEvent?.id || null,
+    const eventData1 = {
+      //일정등록할때 보낼 포맷
+      // meetingId: editEvent?.id || null,
       meetTitle: title.trim() || "새로운 일정",
       meetContent: content.trim() || "내용 없음",
+      meetType: null,
       meetDTstart: `${startDate}${formattedStartTime}`,
       meetDTend: `${endDate}${formattedEndTime}`,
       locationName: location.trim() || "장소없음",
-      locationUrl: locationUrl.trim() || "미설정",
+      locationUrl: locationUrl.trim() || "url 없음",
+      groupName: editEvent?.groupName || "", // 개인일정에서는 그룹이름 없음.(사용자는 수정불가)
       // groupId: groupId.trim() || "미설정",
-      groupName: groupName.trim() || "미설정",
-      color,
+      //groupId: groupId || null, // 그룹 ID를 요청에 포함
+      //groupName: groupName.trim() || "", // 개인일정에서는 그룹이름 없음.(사용자는 수정불가)
+      // color,
+    };
+    const eventData2 = {
+      //일정수정할때 보낼 포맷
+      meetingId: editEvent?.id || null,
+      meetTitle: title.trim() || "새로운 일정",
+      meetContent: content.trim() || "내용 없음",
+
+      meetDTstart: `${startDate}${formattedStartTime}`,
+      meetDTend: `${endDate}${formattedEndTime}`,
+
+      locationName: location.trim() || "장소없음",
+      locationUrl: locationUrl.trim() || "url 없음",
+      // groupId: groupId.trim() || "미설정",
+      //groupId: groupId || null, // 그룹 ID를 요청에 포함
+      // groupName: groupName.trim() || "", // 사용자 수정 가능한 그룹 이름
+      // color,
     };
 
     try {
+      const accessToken = localStorage.getItem("accessToken");
       if (editEvent) {
         const response = await axios.patch(
           `http://192.168.233.218:8080/calendar/update/${editEvent.id}`,
-          eventData,
+          eventData2,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -614,21 +638,17 @@ function CalendarAddModal({
         );
         console.log("Update Event Response:", response.data);
       } else {
+        console.log(eventData);
         const response = await axios.post(
-          `http://192.168.233.218:8080/calendar/create/${format(
-            new Date(startDate),
-            "yyyy"
-          )}/${format(new Date(startDate), "MM")}/${format(
-            new Date(startDate),
-            "dd"
-          )}`,
-          eventData,
+          `http://192.168.233.218:8080/calendar/create`,
+          eventData1,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           }
         );
+        console.log("백엔드 요청성공");
         console.log("Add Event Response:", response.data);
       }
 
@@ -646,6 +666,7 @@ function CalendarAddModal({
   };
 
   const handleDelete = async () => {
+    const accessToken = localStorage.getItem("accessToken");
     if (!editEvent?.id) return;
     try {
       const response = await axios.delete(
@@ -723,14 +744,16 @@ function CalendarAddModal({
           <input
             className="oi"
             type="text"
-            placeholder="그룹명"
-            value={groupId}
-            onChange={(e) => setGroupId(e.target.value)}
+            placeholder="그룹명 없음"
+            value={groupName}
+            // onChange={(e) => setGroupName(e.target.value)}
+            readOnly
           />
           <div className="timeSetting">
             <div className="time-toggle">
               <label>
                 <span
+                  className="tstxt"
                   style={{
                     color: isAllDay ? "#a26af0" : "#ccc",
                   }}
@@ -756,6 +779,9 @@ function CalendarAddModal({
                   className="ed"
                   type="date"
                   value={endDate}
+                  style={{
+                    color: startDate === endDate ? "#ccc" : "black", // 조건부 스타일링
+                  }}
                   onChange={(e) => setEndDate(e.target.value)}
                 />
               </div>
