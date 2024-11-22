@@ -420,7 +420,7 @@ function CalendarPage() {
         ];
         const groupId = meeting.id; // 그룹 ID
         const color = colors[groupId % colors.length]; // ID 기반으로 색상 선택
-
+        const meetType = meeting.meetType;
         // locationMap에서 meeting.id로 location 정보 찾기
         const locationInfo = locationMap[meeting.id] || {};
         const locationName = locationInfo.locationName;
@@ -438,10 +438,9 @@ function CalendarPage() {
             id: meeting.id, // 수정 및 삭제 요청에 사용
             title: meeting.meetTitle,
             content: meeting.meetContent,
-            // location: meeting.locationName || "미설정",
-            // locationUrl: meeting.locationUrl || "미설정",
             location: locationName, // 병합된 locationName
             locationUrl, // 병합된 locationUrl
+            meetType,
             groupName: meeting.groupName || "그룹명 없음", // 그룹 이름
             isAllDay,
             startDate,

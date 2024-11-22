@@ -534,7 +534,6 @@ function CalendarAddModal({
   closeModal,
   editEvent,
   refreshCalendar,
-  accessToken,
 }) {
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
@@ -542,6 +541,7 @@ function CalendarAddModal({
   const [groupId, setGroupId] = useState(""); // 그룹 id
   const [groupName, setGroupName] = useState(""); // 그룹 이름 (문자열, 사용자 수정 가능)
   const [locationUrl, setLocationUrl] = useState(""); // 장소 URL 추가
+  const [meetType, setMeetType] = useState(null);
   const [color, setColor] = useState("#FDBAAB");
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [isAllDay, setIsAllDay] = useState(false);
@@ -567,6 +567,7 @@ function CalendarAddModal({
       setGroupId(editEvent.groupId || ""); // 그룹 ID 초기화
       setGroupName(editEvent.groupName || ""); // 그룹 이름 초기화
       setLocationUrl(editEvent.locationUrl || "");
+      setMeetType(editEvent.meetType || null);
       setColor(
         editEvent.color || colors[Math.floor(Math.random() * colors.length)]
       );
@@ -611,7 +612,8 @@ function CalendarAddModal({
       // meetingId: editEvent?.id || null,
       meetTitle: title.trim() || "새로운 일정",
       meetContent: content.trim() || "내용 없음",
-      meetType: null,
+      // meetType: null,
+      meetType: meetType.trim(),
       meetDTstart: `${startDate}${formattedStartTime}`,
       meetDTend: `${endDate}${formattedEndTime}`,
       groupName: groupName.trim() || "", // 사용자 수정 불가능한 그룹 이름
