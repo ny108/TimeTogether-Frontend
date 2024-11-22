@@ -595,7 +595,7 @@ function CalendarAddModal({
       // meetingId: editEvent?.id || null,
       meetTitle: title.trim() || "새로운 일정",
       meetContent: content.trim() || "내용 없음",
-      meetType: null,
+      meetType: "ONLINE",
       meetDTstart: `${startDate}${formattedStartTime}`,
       meetDTend: `${endDate}${formattedEndTime}`,
       groupName: editEvent?.groupName || "", // 개인일정에서는 그룹이름 없음.(사용자는 수정불가)
@@ -611,7 +611,7 @@ function CalendarAddModal({
       // meetingId: editEvent?.id || null,
       meetTitle: title.trim() || "새로운 일정",
       meetContent: content.trim() || "내용 없음",
-      meetType: "",
+      meetType: null,
       meetDTstart: `${startDate}${formattedStartTime}`,
       meetDTend: `${endDate}${formattedEndTime}`,
       groupName: groupName.trim() || "", // 사용자 수정 불가능한 그룹 이름
@@ -627,7 +627,7 @@ function CalendarAddModal({
       const accessToken = localStorage.getItem("accessToken");
       if (editEvent) {
         const response = await axios.patch(
-          `http://192.168.233.218:8080/calendar/update/${editEvent.id}`,
+          `http://192.168.186.162:8080/calendar/update/${editEvent.id}`,
           eventData2,
           {
             headers: {
@@ -638,8 +638,9 @@ function CalendarAddModal({
         console.log("보낸내용: ", eventData2);
         console.log("일정수정에 대한 백엔드 응답:", response.data);
       } else {
+        console.log("보낸내용: ", eventData1);
         const response = await axios.post(
-          `http://192.168.233.218:8080/calendar/create`,
+          `http://192.168.186.162:8080/calendar/create`,
           eventData1,
           {
             headers: {
@@ -647,7 +648,7 @@ function CalendarAddModal({
             },
           }
         );
-        console.log("보낸내용: ", eventData1);
+
         console.log("일정등록에 대한 백엔드 응답", response.data);
       }
 
@@ -669,7 +670,7 @@ function CalendarAddModal({
     if (!editEvent?.id) return;
     try {
       const response = await axios.delete(
-        `http://192.168.233.218:8080/calendar/delete/${editEvent.id}`,
+        `http://192.168.186.162:8080/calendar/delete/${editEvent.id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -735,7 +736,7 @@ function CalendarAddModal({
 
           <input
             className="oi"
-            type="url"
+            type="text"
             placeholder="장소 URL"
             value={locationUrl}
             onChange={(e) => setLocationUrl(e.target.value)}

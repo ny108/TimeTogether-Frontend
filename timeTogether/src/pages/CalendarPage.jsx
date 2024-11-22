@@ -382,14 +382,14 @@ function CalendarPage() {
 
     try {
       const response = await axios.get(
-        `http://192.168.233.218:8080/calendar/view/${year}/${month}`,
+        `http://192.168.186.162:8080/calendar/view/${year}/${month}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         }
       );
-
+      console.log(response.data);
       // const { meetingList } = response.data.data;
       const { e, l } = response.data.data; // 응답에서 e와 l 추출
       const { meetingList } = e; // e 안의 meetingList 추출
