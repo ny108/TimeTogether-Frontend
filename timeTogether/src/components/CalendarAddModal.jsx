@@ -526,7 +526,6 @@ import { format } from "date-fns";
 import axios from "axios";
 import "./CalendarAddModal.css";
 import { FaTrash } from "react-icons/fa";
-// import axios from "axios";
 
 function CalendarAddModal({
   date,
@@ -562,9 +561,9 @@ function CalendarAddModal({
 
   useEffect(() => {
     if (editEvent) {
-      setTitle(editEvent.title || "");
-      setLocation(editEvent.location || "미설정");
-      setContent(editEvent.content || "미설정");
+      setTitle(editEvent.title || "제목없음");
+      setLocation(editEvent.location || "장소없음");
+      setContent(editEvent.content || "내용없음");
       setGroupId(editEvent.groupId || ""); // 그룹 ID 초기화
       setGroupName(editEvent.groupName || ""); // 그룹 이름 초기화
       setLocationUrl(editEvent.locationUrl || "");
@@ -599,9 +598,9 @@ function CalendarAddModal({
       meetType: null,
       meetDTstart: `${startDate}${formattedStartTime}`,
       meetDTend: `${endDate}${formattedEndTime}`,
+      groupName: editEvent?.groupName || "", // 개인일정에서는 그룹이름 없음.(사용자는 수정불가)
       locationName: location.trim() || "장소없음",
       locationUrl: locationUrl.trim() || "url 없음",
-      groupName: editEvent?.groupName || "", // 개인일정에서는 그룹이름 없음.(사용자는 수정불가)
       // groupId: groupId.trim() || "미설정",
       //groupId: groupId || null, // 그룹 ID를 요청에 포함
       //groupName: groupName.trim() || "", // 개인일정에서는 그룹이름 없음.(사용자는 수정불가)
@@ -609,13 +608,13 @@ function CalendarAddModal({
     };
     const eventData2 = {
       //일정수정할때 보낼 포맷
-      meetingId: editEvent?.id || null,
+      // meetingId: editEvent?.id || null,
       meetTitle: title.trim() || "새로운 일정",
       meetContent: content.trim() || "내용 없음",
-
+      meetType: "",
       meetDTstart: `${startDate}${formattedStartTime}`,
       meetDTend: `${endDate}${formattedEndTime}`,
-
+      groupName: groupName.trim() || "", // 사용자 수정 불가능한 그룹 이름
       locationName: location.trim() || "장소없음",
       locationUrl: locationUrl.trim() || "url 없음",
       // groupId: groupId.trim() || "미설정",
@@ -636,9 +635,9 @@ function CalendarAddModal({
             },
           }
         );
-        console.log("Update Event Response:", response.data);
+        console.log("보낸내용: ", eventData2);
+        console.log("일정수정에 대한 백엔드 응답:", response.data);
       } else {
-        console.log(eventData);
         const response = await axios.post(
           `http://192.168.233.218:8080/calendar/create`,
           eventData1,
@@ -648,8 +647,8 @@ function CalendarAddModal({
             },
           }
         );
-        console.log("백엔드 요청성공");
-        console.log("Add Event Response:", response.data);
+        console.log("보낸내용: ", eventData1);
+        console.log("일정등록에 대한 백엔드 응답", response.data);
       }
 
       closeModal();

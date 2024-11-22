@@ -399,11 +399,12 @@ function CalendarPage() {
       const locationMap = {};
       l.forEach((location) => {
         locationMap[location.meetingId] = {
-          locationName: location.locationName || "미설정",
-          locationUrl: location.locationUrl || "미설정",
+          locationName: location.locationName || "장소없음",
+          locationUrl: location.locationUrl || "url없음",
         };
       });
       console.log(meetingList);
+
       const newEvents = {};
       meetingList.forEach((meeting) => {
         const isAllDay = meeting.meetDTstart.endsWith("T00:00:00");
@@ -441,7 +442,7 @@ function CalendarPage() {
             // locationUrl: meeting.locationUrl || "미설정",
             location: locationName, // 병합된 locationName
             locationUrl, // 병합된 locationUrl
-            groupName: meeting.groupName || "미설정", // 그룹 이름
+            groupName: meeting.groupName || "그룹명 없음", // 그룹 이름
             isAllDay,
             startDate,
             endDate,
@@ -531,6 +532,7 @@ function CalendarPage() {
 
   const handleEventClick = (day, event) => {
     setFocusedEvent(event); // 포커스된 이벤트 설정
+    console.log("Selected Event for Edit:", event);
     setEditEvent(event); // 수정할 이벤트 설정
     setModalDate(day); // 날짜 설정
     // 연속 일정의 모든 날짜를 포커스
