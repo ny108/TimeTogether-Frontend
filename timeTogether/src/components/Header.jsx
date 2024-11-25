@@ -8,7 +8,7 @@ const Header = ({ title, onBackClick, onMenuClick }) => {
     <div className="h-header">
       <BackButton onClick={onBackClick} />
       <div className="h-header-title">{title}</div>
-      <MenuButton onClick={onMenuClick} />
+      {/* <MenuButton onClick={onMenuClick} /> */}
     </div>
   );
 };
