@@ -136,7 +136,8 @@ function CreateNewMeet({groupId, setMakeNewMeeting}) {
             groupTimes: "07002100   ", //오전 7시 - 오전 9시 생성 시 입력한 시간
             users: [
                 {
-                    userId: "emptyTable",
+                    userName: "emptyTable",
+                    // userId: "emptyTable",
                     days: [
                         {
                             date: "2024-10-09", //입력한 날짜
@@ -218,11 +219,11 @@ function CreateNewMeet({groupId, setMakeNewMeeting}) {
                         if(newMeetTitle.length > 0 && selectedDates.length > 0){
                             const formatedDate = changeDateFormat(selectedDates)
 
-                            console.log('debug', groupId, newMeetTitle)
+                            console.log(`http://192.168.12.218:8080/group/${groupId}/meet/${newMeetTitle}/add`)
                             //새 회의 생성 연결 성공
                             axios.post(
                                 // `${testip}/group/${groupId}/meet/${newMeetTitle}/add`
-                                `http://172.20.10.4:8080/group/${groupId}/meet/${newMeetTitle}/add`
+                                `http://192.168.12.218:8080/group/${groupId}/meet/${newMeetTitle}/add`
                                 , formatedDate,
                                 {
                                     headers:
@@ -231,7 +232,7 @@ function CreateNewMeet({groupId, setMakeNewMeeting}) {
                                         }
                                 }
                             ).then((res)=>{
-                                console.log(res.data);
+                                console.log('요청성공_응답 : ',res.data);
                                 setMakeNewMeeting(false);
                                 // navigate(-1);
                             }).catch((err)=>{

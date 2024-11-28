@@ -574,14 +574,10 @@ function CalendarAddModal({
       setStartDate(editEvent.startDate || format(new Date(), "yyyy-MM-dd"));
       setEndDate(editEvent.endDate || format(new Date(), "yyyy-MM-dd"));
       setIsAllDay(editEvent.isAllDay || false);
-      if (editEvent.time) {
-        const [start, end] = editEvent.time.split(" - ");
-        setStartTime(start || "11:00");
-        setEndTime(end || "23:00");
-      } else {
-        setStartTime("11:00");
-        setEndTime("23:00");
-      }
+
+      // `startTime`과 `endTime` 상태 설정
+      setStartTime(editEvent.startTime || "11:00");
+      setEndTime(editEvent.endTime || "23:00");
     }
   }, [editEvent]);
 
@@ -631,7 +627,7 @@ function CalendarAddModal({
       const accessToken = localStorage.getItem("accessToken");
       if (editEvent) {
         const response = await axios.patch(
-          `http://172.20.10.4:8080/calendar/update/${editEvent.id}`,
+          `http://192.168.12.218:8080/calendar/update/${editEvent.id}`,
           eventData2,
           {
             headers: {
@@ -644,7 +640,7 @@ function CalendarAddModal({
       } else {
         console.log("보낸내용: ", eventData1);
         const response = await axios.post(
-          `http://172.20.10.4:8080/calendar/create`,
+          `http://192.168.12.218:8080/calendar/create`,
           eventData1,
           {
             headers: {
@@ -674,7 +670,7 @@ function CalendarAddModal({
     if (!editEvent?.id) return;
     try {
       const response = await axios.delete(
-        `http://172.20.10.4:8080/calendar/delete/${editEvent.id}`,
+        `http://192.168.12.218:8080/calendar/delete/${editEvent.id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

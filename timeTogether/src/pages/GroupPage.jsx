@@ -26,7 +26,9 @@ function GroupPage() {
 
       try {
         const response = await axios.get(
-          "http://192.168.186.162:8080/group/groups/view",
+
+          "http://192.168.12.218:8080/group/groups/view",
+
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -50,7 +52,7 @@ function GroupPage() {
               ? group.userNameResponseList
                   .map((user) => user.userName)
                   .join(", ")
-              : "No Members",
+              : Array(0),
           }));
 
           setGroups(formattedData);
@@ -72,7 +74,9 @@ function GroupPage() {
   useEffect(() => {
     // 새로운 배열 형식의 더미 응답 데이터
     axios
-      .get("http://192.168.186.162:8080/header/group/groups/view")
+
+      .get("http://192.168.12.218:8080/header/group/groups/view")
+
       .then((response) => {
         console.log(response.data);
       })
@@ -129,7 +133,7 @@ function GroupPage() {
     };
 
     // 더미 데이터를 상태에 설정
-    setGroups(exampleResponse.data);
+    //setGroups(exampleResponse.data);
   }, []);
 
   const openInviteModal = () => setIsInviteModalOpen(true);
